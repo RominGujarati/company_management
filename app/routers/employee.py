@@ -12,7 +12,7 @@ async def get_current_user(user_id: str):
         raise HTTPException(status_code=404, detail="User not found")
     return User.from_mongo(user_data)
 
-@router.on_event("startup")
+@router.get('/start')
 async def startup_event():
     existing_super_admin = await db.users.find_one({"role": "super_admin"})
     if not existing_super_admin:
@@ -24,6 +24,9 @@ async def startup_event():
         )
         result = await db.users.insert_one(admin_data.dict())
         print(f"Super Admin created with ID: {result.inserted_id}")
+        return {"message": "Startup event triggered"}   
+    return {"message": "Startup event not  triggered"}
+
 
 
 @router.post("/company_admin/", response_model=User, status_code=201)

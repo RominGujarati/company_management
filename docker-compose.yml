@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      MONGODB_URL: "mongodb://user:password@db:27017/"
+      SECRET_KEY: "5b4bb4e6fe7862a28986e67b7087f0a61385f28e32ce9284295a3ce2781afc97"
+      REFRESH_SECRET_KEY : "5b4bb4e6fe7862a28986e67b7087f0a61385f28e32ce9284295a3ce2781afc97-refresh"
+      ALGORITHM : "HS256"
+      adminapikey : "ysjdahkdjsadswadqw"
+      ACCESS_TOKEN_EXPIRE_MINUTES : 30
+      REFRESH_TOKEN_EXPIRE_MINUTES : 10080
+      timeout : 60
+
+  db:
+    image: mongo:4.4
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: dbname
+    ports:
+      - "27018:27017"

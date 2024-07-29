@@ -27,7 +27,7 @@ class User(BaseModel):
         role = values.get('role')
         company_id = values.get('company_id')
 
-        if role not in ['company_admin', 'employee']:
+        if role not in ['super_admin', 'company_admin', 'employee']:
             raise HTTPException(status_code=400, detail="Role must be 'company_admin' or 'employee'")
 
         if role == 'employee' and company_id is None:
